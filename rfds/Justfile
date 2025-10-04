@@ -1,14 +1,14 @@
 # Default recipe: convert all Orgmode files
-default: convert-all
+default: compile-all
 
-# Convert a single Orgmode file to Typst, PDF, and HTML
-convert FILE:
-    just convert-typst "{{FILE}}"
-    just convert-pdf "{{FILE}}"
-    just convert-html "{{FILE}}"
+# compile a single Orgmode file to Typst, PDF, and HTML
+compile FILE:
+    just compile-typst "{{FILE}}"
+    just compile-pdf "{{FILE}}"
+    just compile-html "{{FILE}}"
 
-# Convert Orgmode file to Typst
-convert-typst FILE:
+# compile Orgmode file to Typst
+compile-typst FILE:
     #!/usr/bin/env fish
     if not string match -q "*.org" "{{FILE}}"
         echo "Error: File must have .org extension"
@@ -20,25 +20,25 @@ convert-typst FILE:
     set BASENAME (basename "{{FILE}}" .org)
     pandoc --bibliography="./references.bib" --citeproc --csl ./style.csl -t typst -o "build/typst/$BASENAME.typ" "{{FILE}}"
 
-# Convert Typst file to PDF
-convert-pdf FILE:
+# compile Typst file to PDF
+compile-pdf FILE:
     #!/usr/bin/env fish
     mkdir -p build/pdf
     set BASENAME (basename "{{FILE}}" .org)
     typst compile "build/typst/$BASENAME.typ" "build/pdf/$BASENAME.pdf"
 
-# Convert Typst file to HTML
-convert-html FILE:
+# compile Typst file to HTML
+compile-html FILE:
     #!/usr/bin/env fish
     mkdir -p build/html
     set BASENAME (basename "{{FILE}}" .org)
     typst compile --features html "build/typst/$BASENAME.typ" "build/html/$BASENAME.html"
 
-# Convert all Orgmode files
-convert-all:
+# compile all Orgmode files
+compile-all:
     #!/usr/bin/env fish
     for file in *.org
         if test -f "$file"
-            just convert "$file"
+            just compile "$file"
         end
     end
