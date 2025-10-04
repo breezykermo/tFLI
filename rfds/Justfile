@@ -42,3 +42,7 @@ compile-all:
             just compile "$file"
         end
     end
+
+# Update typst flake input to latest version
+update:
+    nix flake update
