@@ -21,3 +21,10 @@ just
 
 # compile a single rfd to PDF/HTML
 just compile ./0.what-is-an-rfd.org  ```
+
+The typst we are using builds directly from the upstream GitHub, as HTML generation is a feature in progress.
+To update the version of typst to the latest code on the `main` branch, run:
+
+```bash
+just update 
+```
